@@ -10,7 +10,7 @@ Set the IP address of the computer connected to the sensor.
 
 ### Running
 ```
-roslaunch imagenex831l sonar.launch
+ros2 launch imagenex831l sonar.launch
 ```
 
 ## Authors
