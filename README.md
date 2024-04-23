@@ -14,8 +14,9 @@ ros2 launch imagenex831l sonar.launch
 ```
 
 ## Authors
-
-#Source of orginal imagenex831l driver
+* Lilian Lamb - [Autonomous Field Robotics Lab](https://afrl.cse.sc.edu), University of South Carolina
+  
+# Source of orginal imagenex831l driver
 * [Alberto Quattrini Li](https://sites.google.com/view/albertoq) - [Reality and Robotics Lab](https://rlab.cs.dartmouth.edu), Dartmouth College
 * Sharmin Rahman - [Autonomous Field Robotics Lab](https://afrl.cse.sc.edu), University of South Carolina
 
