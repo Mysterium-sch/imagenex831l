@@ -99,7 +99,7 @@ class Imagenex831L():
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.connection.connect((ip_address, port))
-        except socket.error, msg:
+        except socket.error as msg:
             self.connection = None
 
         # Setting parameters.
@@ -124,7 +124,7 @@ class Imagenex831L():
         """Send request of data through TCP/IP. TODO(aql) more complete doc.
         """
         if self.connection == None:
-            print "No Connection"
+            print("No Connection")
         if self.connection != None:
             request = struct.pack(self.request_format, 
                 BYTE_0,
@@ -202,10 +202,10 @@ class Imagenex831L():
         frequency_error_flag = bool(data[4] & 0x02)
         internal_error_flag = bool(data[4] & 0x04)
         switches_accepted_flag = bool(data[4] & 0x80)
-        print "range_error_flag ", range_error_flag
-        print "frequency_error_flag ", frequency_error_flag
-        print "sensor_error_flag ", internal_error_flag
-        print "switches_accepted_flag ", switches_accepted_flag
+        print("range_error_flag ", range_error_flag)
+        print("frequency_error_flag ", frequency_error_flag)
+        print("sensor_error_flag ", internal_error_flag)
+        print("switches_accepted_flag ", switches_accepted_flag)
 
         # Processing of bytes 5-6: head position; value in degrees (-180, 180)
         head_high_byte = (data[6] & 0x3E)>>1
@@ -214,27 +214,27 @@ class Imagenex831L():
         head_position = 0.3 * (head_position - 600)
         # step direction: 0 = counter-clockwise, 1 = clockwise.
         step_direction = (data[6] & 0x40)>>6
-        print "head_position ", (head_position, step_direction)
+        print("head_position ", (head_position, step_direction))
 
         # byte 7
         maximum_range = 0
         for max_range, range_id in BYTE_3.iteritems():
             if range_id == data[7]:
                 maximum_range = max_range
-                print "max range ", max_range
+                print("max range ", max_range)
 
         # Processing of bytes 8-9: profile range; in centimetres.
         profile_range_high_byte = (data[9] & 0x7E)>>1
         profile_range_low_byte = ((data[9] & 0x01)<<7) | (data[8] & 0x7F)        
         profile_range = (profile_range_high_byte<<8) | profile_range_low_byte
         profile_range /= 100.0
-        print "profile range ", profile_range
+        print("profile range ", profile_range)
 
         # Processing of bytes 10-11: number of Echo Data Bytes returned.
         data_bytes_high_byte = (data[11] & 0x7E)>>1
         data_bytes_low_byte = ((data[11] & 0x01)<<7) | (data[10] & 0x7F)
         data_bytes = (data_bytes_high_byte<<8) | data_bytes_low_byte
-        print "data_bytes ", data_bytes
+        print("data_bytes ", data_bytes)
 
         # Processing of bytes 16-17: roll angle.
         roll_angle = ((data[17] &0x3F) <<8) | data[16]
@@ -244,7 +244,7 @@ class Imagenex831L():
             least_significant_bit_zero=False)
         roll_angle_error_alarm_flag = data[17] & 0x04
         roll_angle_new_data_flag = data[17] & 0x08
-        print "roll_angle ", roll_angle
+        print("roll_angle ", roll_angle)
 
         # Processing of bytes 18-19: pitch angle.
         pitch_angle = ((data[19] &0x3F) <<8) | data[18]
@@ -254,7 +254,7 @@ class Imagenex831L():
             least_significant_bit_zero=False)
         pitch_angle_error_alarm_flag = data[17] & 0x04
         pitch_angle_new_data_flag = data[17] & 0x08
-        print "pitch_angle ", pitch_angle
+        print("pitch_angle ", pitch_angle)
 
         # Processing of bytes 20-21: roll acceleration.
         roll_acceleration = ((data[21] &0x3F) <<8) | data[20]
@@ -266,7 +266,7 @@ class Imagenex831L():
             least_significant_bit_zero=False)
         roll_acceleration_error_alarm_flag = data[17] & 0x04
         roll_acceleration_new_data_flag = data[17] & 0x08
-        print "roll_accel ", roll_acceleration
+        print("roll_accel ", roll_acceleration)
 
         # Processing of bytes 22-23: pitch acceleration.
         pitch_acceleration = ((data[23] &0x3F) <<8) | data[22]
@@ -278,11 +278,11 @@ class Imagenex831L():
             least_significant_bit_zero=False)
         pitch_acceleration_error_alarm_flag = data[17] & 0x04
         pitch_acceleration_new_data_flag = data[17] & 0x08
-        print "pitch_accel ", pitch_acceleration
+        print("pitch_accel ", pitch_acceleration)
 
         # Processing of echo data. # TODO(aql) IMX
         ranges = data[32:len(data)-1]  
-        print "ranges ", ranges
+        print("ranges ", ranges)
 
         if message:
             message.intensity = ranges

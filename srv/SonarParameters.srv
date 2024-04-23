@@ -1,0 +1,18 @@
+# SonarParameters.srv
+
+int32 max_range           # Max range ID (values: 2, 4, 6, 8, 10, 20, 30, 40, 50, 60)
+int32 step_direction      # Step direction (values: 0 - Normal, 1 - Reverse)
+int32 start_gain          # Start gain (1dB increment) (range: 0 to 40)
+int32 absorption          # Absorption in dB per meter (range: 0 to 255)
+int32 train_angle         # Train angle (offset for sector width in degrees) (range: 0 to 120)
+int32 sector_width        # Sector width (field of view covered by sensor in degrees) (range: 0 to 120)
+int32 step_size           # Step size (values: 0 - No step, 1 - 0.9 degrees/step)
+int32 pulse_length        # Pulse length in microseconds (range: 0 to 100)
+int32 min_range           # Minimum range in meters (value in cm) (range: 0 to 250)
+int32 pitch_roll_mode     # Pitch/roll sensor mode (values: 0 - Interrogate, 1 - Calibration)
+int32 profile_mode        # Profile mode (values: 0 - Off, 1 - On)
+int32 motor_mode          # Motor operation mode (values: 0 - Normal, 1 - Calibrate)
+int32 frequency           # Frequency in kHz (5kHz step) (range: 2150 to 2350)
+---
+bool success              # Indicates if parameters were set successfully
+
