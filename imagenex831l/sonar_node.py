@@ -4,7 +4,6 @@ import rclpy
 from rclpy.node import Node
 from imagenex831l.msg import ProcessedRange, RawRange
 from imagenex831l.imagenex831l_driver import Imagenex831L
-from imagenex831l.srv import SonarParameters
 
 
 SENSOR_NAME = 'imagenex831l'
@@ -14,13 +13,17 @@ POLL_FREQUENCY = 1000
 RESET_TIMEOUT = 1
 
 class SonarNode(Node):
+    
+    # Parameters
+
+
     def __init__(self):
         super().__init__('imagenex831l')
         self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
         self.range_raw_pub = self.create_publisher(RawRange, f'{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
         self.frequency = self.get_parameter('poll_frequency').value if self.has_parameter('poll_frequency') else POLL_FREQUENCY
         self.sensor = Imagenex831L()
-        self.set_sonar_parameters()
+        #self.set_sonar_parameters()
         #self.parameter_server = Server(self, Imagenex831LConfig, self.parameters_callback)
         self.first_exception_time = None
 
@@ -28,39 +31,27 @@ class SonarNode(Node):
     #    config = self.sensor.set_parameters(config)
     #    return config
 
-    def set_sonar_parameters(self):
-        client = self.create_client(SonarParameters, 'set_sonar_parameters')
-        while not client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('Service not available, waiting...')
-        request = SonarParameters.Request()
-        request.max_range = 60
-        request.step_direction = 0
-        request.start_gain = 0
-        request.absorption = 0
-        request.train_angle = 0
-        request.sector_width = 0
-        request.step_size = 0
-        request.pulse_length = 0
-        request.min_range = 0
-        request.pitch_roll_mode = 0
-        request.profile_mode = 0
-        request.motor_mode = 0
-        request.frequency = 2150
+#    def set_sonar_parameters(self):
+#        self.get_logger().info('Setting Parameters...')
+#        request = SonarParameters.Request()
+#        request.max_range = 60
+#        request.step_direction = 0
+#        request.start_gain = 0
+#        request.absorption = 0
+#        request.train_angle = 0
+#        request.sector_width = 0
+#        request.step_size = 0
+#        request.pulse_length = 0
+#        request.min_range = 0
+#        request.pitch_roll_mode = 0
+#        request.profile_mode = 0
+#        request.motor_mode = 0
+#        request.frequency = 2150
+#        self.get_logger().info('Parameters set')
 
-        future = client.call_async(request)
-
-        while rclpy.ok():
-            rclpy.spin_once(self)
-            if future.done():
-                if future.result() is not None:
-                    response = future.result()
-                    if response.success:
-                        self.get_logger().info("Sonar parameters set successfully!")
-                    else:
-                        self.get_logger().error("Failed to set sonar parameters.")
-                break
 
     def spin(self):
+        node = self.create_rate(self.frequency)
         while rclpy.ok():
             sonar_msg = ProcessedRange()
             sonar_raw_msg = RawRange()
@@ -95,9 +86,7 @@ class SonarNode(Node):
                         self.sensor.close_connection()
                         break
 
-            self.get_logger().info('Publishing data...')
-            self.spin_once()
-
+            node.sleep()
         self.sensor.close_connection()
 
 def main(args=None):

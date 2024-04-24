@@ -12,7 +12,6 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   msg/RawRange.msg
   msg/ProcessedRange.msg
-  srv/SonarParameters.srv
   DEPENDENCIES std_msgs geometry_msgs
 )
 
