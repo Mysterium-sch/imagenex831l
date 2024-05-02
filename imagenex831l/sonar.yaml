@@ -1,0 +1,23 @@
+imagenex831l_paramters:
+  ros__parameters:
+    max_range: 10  # Max range in the request (byte 3).
+    step_direction: 0  # Step direction (byte 5).
+    start_gain: 20  # Start gain (1dB increment).
+    absorption: 10  # Absorption in dB per m.
+    train_angle: 120  # Train angle, which is the offset for the sector width (degree), steps of 3 degrees.
+    sector_width: 120  # Field of view covered by the sensor (degree), steps of 3 degrees.
+    step_size: 3  # Step size.
+    pulse: 10  # Pulse length in microseconds.
+    min_range: 1  # Min range in meters [0, 250]cm; value in cm.
+    pitch_roll_mode: 0  # Pitch roll mode.
+    profile_mode: 0  # Profile mode.
+    motor_mode: 0  # Motor mode.
+    frequency: 20  # Frequency (kHz), 5kHz step.
+    
+    
+    
+    
+    
+    
+    
+    

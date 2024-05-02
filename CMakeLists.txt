@@ -20,7 +20,9 @@ ament_python_install_package(imagenex831l)
 
 
 install(DIRECTORY
-  launch imagenex831l
+  launch
+  imagenex831l
+  cfg
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from imagenex831l.msg import ProcessedRange, RawRange
 from imagenex831l.imagenex831l_driver import Imagenex831L
-
+from rcl_interfaces.msg import SetParametersResult
 
 SENSOR_NAME = 'imagenex831l'
 SONAR_TOPIC_NAME = 'range'
@@ -21,54 +21,57 @@ class SonarNode(Node):
         super().__init__('imagenex831l')
         self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
         self.range_raw_pub = self.create_publisher(RawRange, f'{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
-        self.frequency = self.get_parameter('poll_frequency').value if self.has_parameter('poll_frequency') else POLL_FREQUENCY
-        self.sensor = Imagenex831L()
-        #self.set_sonar_parameters()
+        
+        #self.frequency = self.get_parameter('poll_frequency').value if self.has_parameter('poll_frequency') else POLL_FREQUENCY
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+            ('max_range', -1),
+            ('step_direction', -1),
+            ('start_gain', -1),
+            ('absorption', -1),
+            ('train_angle', -1),
+            ('sector_width', -1),
+            ('step_size', -1),
+            ('pulse', -1),
+            ('min_range', -1),
+            ('pitch_roll_mode', -1),
+            ('profile_mode', -1),
+            ('motor_mode', -1),
+            ('frequency', -1)
+            ])
+
+        self.add_on_set_parameters_callback(self.parameters_callback)
         #self.parameter_server = Server(self, Imagenex831LConfig, self.parameters_callback)
         self.first_exception_time = None
+        #self.sensor = Imagenex831L()
 
-    #def parameters_callback(self, config, level):
-    #    config = self.sensor.set_parameters(config)
-    #    return config
-
-#    def set_sonar_parameters(self):
-#        self.get_logger().info('Setting Parameters...')
-#        request = SonarParameters.Request()
-#        request.max_range = 60
-#        request.step_direction = 0
-#        request.start_gain = 0
-#        request.absorption = 0
-#        request.train_angle = 0
-#        request.sector_width = 0
-#        request.step_size = 0
-#        request.pulse_length = 0
-#        request.min_range = 0
-#        request.pitch_roll_mode = 0
-#        request.profile_mode = 0
-#        request.motor_mode = 0
-#        request.frequency = 2150
-#        self.get_logger().info('Parameters set')
+    def parameters_callback(self, params):
+        for param in params:
+            print(vars(param))
+        return SetParametersResult(successful=True)
 
 
     def spin(self):
-        node = self.create_rate(self.frequency)
+        #node = self.create_rate(self.frequency)
+        self.get_logger().info(str(self.get_parameter('pulse')))
         while rclpy.ok():
             sonar_msg = ProcessedRange()
             sonar_raw_msg = RawRange()
             current_time = self.get_clock().now()
 
             try:
-                self.sensor.send_request()
-                raw_data = self.sensor.read_data()
+                #self.sensor.send_request()
+                #raw_data = self.sensor.read_data()
 
                 sonar_raw_msg.header.stamp = current_time.to_msg()
                 sonar_raw_msg.header.frame_id = 'sonar'
-                sonar_raw_msg.data = raw_data
+                #sonar_raw_msg.data = raw_data
                 self.get_logger().debug(str(sonar_raw_msg))
 
                 sonar_msg.header.stamp = current_time.to_msg()
                 sonar_msg.header.frame_id = 'sonar'
-                self.sensor.interpret_data(raw_data, sonar_msg)
+                #self.sensor.interpret_data(raw_data, sonar_msg)
 
                 self.range_raw_pub.publish(sonar_raw_msg)
                 self.range_pub.publish(sonar_msg)
@@ -83,11 +86,11 @@ class SonarNode(Node):
                 else:
                     if current_time - self.first_exception_time > rclpy.Duration(RESET_TIMEOUT):
                         self.get_logger().error('Sonar sensor not ready')
-                        self.sensor.close_connection()
+                        #self.sensor.close_connection()
                         break
 
-            node.sleep()
-        self.sensor.close_connection()
+            #node.sleep()
+        #self.sensor.close_connection()
 
 def main(args=None):
     rclpy.init(args=args)
