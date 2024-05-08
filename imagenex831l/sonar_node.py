@@ -54,7 +54,6 @@ class SonarNode(Node):
 
     def spin(self):
         node = self.create_rate(self.frequency)
-        self.get_logger().info(str(self.get_parameter('pulse')))
         while rclpy.ok():
             sonar_msg = ProcessedRange()
             sonar_raw_msg = RawRange()
