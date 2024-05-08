@@ -218,7 +218,7 @@ class Imagenex831L():
 
         # byte 7
         maximum_range = 0
-        for max_range, range_id in BYTE_3.iteritems():
+        for max_range, range_id in BYTE_3.items():
             if range_id == data[7]:
                 maximum_range = max_range
                 print("max range ", max_range)
