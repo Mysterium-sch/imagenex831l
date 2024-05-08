@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from imagenex831l.imagenex831l_driver import Imagenex831L
+from imagenex831l_ros2.imagenex831l_driver import Imagenex831L
 
 class SonarNode(Node):
     def __init__(self):
