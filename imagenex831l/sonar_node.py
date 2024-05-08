@@ -26,25 +26,25 @@ class SonarNode(Node):
         self.declare_parameters(
             namespace='',
             parameters=[
-            ('max_range', -1),
-            ('step_direction', -1),
-            ('start_gain', -1),
-            ('absorption', -1),
-            ('train_angle', -1),
-            ('sector_width', -1),
-            ('step_size', -1),
-            ('pulse', -1),
-            ('min_range', -1),
-            ('pitch_roll_mode', -1),
-            ('profile_mode', -1),
-            ('motor_mode', -1),
-            ('frequency', -1)
+            ('max_range', rclpy.Parameter.Type.INTEGER),
+            ('step_direction', rclpy.Parameter.Type.INTEGER),
+            ('start_gain', rclpy.Parameter.Type.INTEGER),
+            ('absorption', rclpy.Parameter.Type.INTEGER),
+            ('train_angle', rclpy.Parameter.Type.INTEGER),
+            ('sector_width', rclpy.Parameter.Type.INTEGER),
+            ('step_size', rclpy.Parameter.Type.INTEGER),
+            ('pulse', rclpy.Parameter.Type.INTEGER),
+            ('min_range', rclpy.Parameter.Type.INTEGER),
+            ('pitch_roll_mode', rclpy.Parameter.Type.INTEGER),
+            ('profile_mode', rclpy.Parameter.Type.INTEGER),
+            ('motor_mode', rclpy.Parameter.Type.INTEGER),
+            ('frequency', rclpy.Parameter.Type.INTEGER)
             ])
 
         self.add_on_set_parameters_callback(self.parameters_callback)
         #self.parameter_server = Server(self, Imagenex831LConfig, self.parameters_callback)
         self.first_exception_time = None
-        #self.sensor = Imagenex831L()
+        self.sensor = Imagenex831L()
 
     def parameters_callback(self, params):
         for param in params:
@@ -53,7 +53,7 @@ class SonarNode(Node):
 
 
     def spin(self):
-        #node = self.create_rate(self.frequency)
+        node = self.create_rate(self.frequency)
         self.get_logger().info(str(self.get_parameter('pulse')))
         while rclpy.ok():
             sonar_msg = ProcessedRange()
@@ -61,17 +61,17 @@ class SonarNode(Node):
             current_time = self.get_clock().now()
 
             try:
-                #self.sensor.send_request()
-                #raw_data = self.sensor.read_data()
+                self.sensor.send_request()
+                raw_data = self.sensor.read_data()
 
                 sonar_raw_msg.header.stamp = current_time.to_msg()
                 sonar_raw_msg.header.frame_id = 'sonar'
-                #sonar_raw_msg.data = raw_data
+                sonar_raw_msg.data = raw_data
                 self.get_logger().debug(str(sonar_raw_msg))
 
                 sonar_msg.header.stamp = current_time.to_msg()
                 sonar_msg.header.frame_id = 'sonar'
-                #self.sensor.interpret_data(raw_data, sonar_msg)
+                self.sensor.interpret_data(raw_data, sonar_msg)
 
                 self.range_raw_pub.publish(sonar_raw_msg)
                 self.range_pub.publish(sonar_msg)
@@ -89,8 +89,8 @@ class SonarNode(Node):
                         #self.sensor.close_connection()
                         break
 
-            #node.sleep()
-        #self.sensor.close_connection()
+            node.sleep()
+        self.sensor.close_connection()
 
 def main(args=None):
     rclpy.init(args=args)
