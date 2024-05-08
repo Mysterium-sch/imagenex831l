@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(imagenex831l)
+project(imagenex831l_ros2)
 
 ## Find dependencies
 find_package(ament_cmake REQUIRED)
