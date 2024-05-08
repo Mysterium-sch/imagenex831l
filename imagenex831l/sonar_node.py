@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from imagenex831l_ros2.msg import ProcessedRange, RawRange
-from imagenex831l_ros2.imagenex831l_driver import Imagenex831L
+from imagenex831l.imagenex831l_driver import Imagenex831L
 from rcl_interfaces.msg import SetParametersResult
 
 SENSOR_NAME = 'imagenex831l'
