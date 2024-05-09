@@ -229,7 +229,7 @@ class Imagenex831L():
         profile_range_high_byte = (data[9] & 0x7E)>>1
         profile_range_low_byte = ((data[9] & 0x01)<<7) | (data[8] & 0x7F)        
         profile_range = int((profile_range_high_byte<<8) | profile_range_low_byte)
-        profile_range /= 100.0
+        profile_range /= int(100.0)
         print("profile range ", profile_range)
 
         # Processing of bytes 10-11: number of Echo Data Bytes returned.
@@ -296,7 +296,7 @@ class Imagenex831L():
             message.head_position = head_position
             message.step_direction = step_direction
             message.max_range = float(maximum_range)
-            message.profile_range = profile_range
+            message.profile_range = int(profile_range)
             message.roll_angle = roll_angle
             message.pitch_angle = pitch_angle
             message.roll_acceleration = roll_acceleration
