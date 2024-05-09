@@ -222,7 +222,7 @@ class Imagenex831L():
         maximum_range = 0
         for max_range, range_id in BYTE_3.items():
             if range_id == data[7]:
-                maximum_range = max_range
+                maximum_range = float(max_range)
                 print("max range ", max_range)
 
         # Processing of bytes 8-9: profile range; in centimetres.
@@ -295,7 +295,7 @@ class Imagenex831L():
 
             message.head_position = head_position
             message.step_direction = step_direction
-            message.max_range = maximum_range
+            message.max_range = float(maximum_range)
             message.profile_range = profile_range
             message.roll_angle = roll_angle
             message.pitch_angle = pitch_angle
