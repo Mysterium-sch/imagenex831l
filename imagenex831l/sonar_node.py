@@ -14,9 +14,6 @@ RESET_TIMEOUT = 1
 
 class SonarNode(Node):
     
-    # Parameters
-
-
     def __init__(self):
         super().__init__('imagenex831l')
         self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
