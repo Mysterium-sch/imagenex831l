@@ -186,6 +186,8 @@ class Imagenex831L():
             # Receiving data.
             data = struct.unpack(data_format,
                 self.connection.recv(bits_received))
+        # Ensure each value is of type int
+        data = tuple(int(value) for value in data)
 
         return data
 
