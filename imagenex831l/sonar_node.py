@@ -9,7 +9,7 @@ from rcl_interfaces.msg import SetParametersResult
 SENSOR_NAME = 'imagenex831l'
 SONAR_TOPIC_NAME = 'range'
 SONAR_RAW_TOPIC_NAME = 'range_raw'
-POLL_FREQUENCY = 1000
+POLL_FREQUENCY = 10
 RESET_TIMEOUT = 1
 
 class SonarNode(Node):
