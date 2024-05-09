@@ -26,7 +26,7 @@ NUM_BITS_IN_BYTE = 8
 SONAR_IP_ADDRESS = "192.168.0.5"
 SONAR_PORT = 4040
 SONAR_RANGE = 10 # byte 3 (Key ID for value).
-SONAR_STEP_DIRECTION = 0 # byte 5 (Key ID for value).
+SONAR_STEP_DIRECTION = bool(0) # byte 5 (Key ID for value).
 SONAR_START_GAIN = 10 # byte 8 (ID for value).
 SONAR_ABSORPTION = 10 # byte 10 (ID for value).
 SONAR_STEP_SIZE = 3 # byte 13 (ID for value).
@@ -164,8 +164,8 @@ class Imagenex831L():
                 BYTE_26
                 )
             self.connection.send(request)
-            if self.step_direction == 1:
-                self.step_direction = 0
+            if self.step_direction == bool(1):
+                self.step_direction = bool(0)
 
     def read_data(self):
         """Receive request of data through TCP/IP. TODO(aql) more complete doc.
@@ -213,7 +213,7 @@ class Imagenex831L():
         head_position = (head_high_byte<<8) | head_low_byte 
         head_position = 0.3 * (head_position - 600)
         # step direction: 0 = counter-clockwise, 1 = clockwise.
-        step_direction = (data[6] & 0x40)>>6
+        step_direction = bool((data[6] & 0x40)>>6)
         print("head_position ", (head_position, step_direction))
 
         # byte 7
@@ -327,7 +327,7 @@ class Imagenex831L():
         self.step_direction = config.step_direction # byte 5.
         # Ensure that step_direction returns to 0 as it is one-time bit to
         # reverse the direction of the rotating transducer.
-        config.step_direction = 0
+        config.step_direction = bool(0)
         self.start_gain = config.start_gain # byte 8.
         if config.absorption == 253:
             # Avoid problems with the end character of the switch command.
