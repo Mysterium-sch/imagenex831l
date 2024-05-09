@@ -85,7 +85,7 @@ class SonarNode(Node):
                 else:
                     if current_time - self.first_exception_time > rclpy.Duration(RESET_TIMEOUT):
                         self.get_logger().error('Sonar sensor not ready')
-                        #self.sensor.close_connection()
+                        self.sensor.close_connection()
                         break
 
             node.sleep()
