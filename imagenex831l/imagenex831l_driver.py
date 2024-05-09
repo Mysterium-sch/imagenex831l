@@ -228,7 +228,7 @@ class Imagenex831L():
         # Processing of bytes 8-9: profile range; in centimetres.
         profile_range_high_byte = (data[9] & 0x7E)>>1
         profile_range_low_byte = ((data[9] & 0x01)<<7) | (data[8] & 0x7F)        
-        profile_range = (profile_range_high_byte<<8) | profile_range_low_byte
+        profile_range = int((profile_range_high_byte<<8) | profile_range_low_byte)
         profile_range /= 100.0
         print("profile range ", profile_range)
 
