@@ -14,7 +14,7 @@
 
 import socket # For interacting with the sensor with TCP/IP.
 import struct # Preparing the packets to be sent.
-
+import rclpy
 import numpy
 
 from utilities import *
@@ -103,20 +103,51 @@ class Imagenex831L():
             self.connection = None
 
         # Setting parameters.
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+            ('max_range', rclpy.Parameter.Type.INTEGER),
+            ('step_direction', rclpy.Parameter.Type.INTEGER),
+            ('start_gain', rclpy.Parameter.Type.INTEGER),
+            ('absorption', rclpy.Parameter.Type.INTEGER),
+            ('train_angle', rclpy.Parameter.Type.INTEGER),
+            ('sector_width', rclpy.Parameter.Type.INTEGER),
+            ('step_size', rclpy.Parameter.Type.INTEGER),
+            ('pulse', rclpy.Parameter.Type.INTEGER),
+            ('min_range', rclpy.Parameter.Type.INTEGER),
+            ('pitch_roll_mode', rclpy.Parameter.Type.INTEGER),
+            ('profile_mode', rclpy.Parameter.Type.INTEGER),
+            ('motor_mode', rclpy.Parameter.Type.INTEGER),
+            ('frequency', rclpy.Parameter.Type.INTEGER)
+            ])
+        self.max_range = self.get_parameter('max_range').value
+        self.step_direction = self.get_parameter('step_direction').value
+        self.start_gain = self.get_parameter('start_gain').value
+        self.absorption = self.get_parameter('absorption').value
+        self.train_angle = self.get_parameter('train_angle').value
+        self.sector_width = self.get_parameter('sector_width').value
+        self.step_size = self.get_parameter('step_size').value
+        self.pulse = self.get_parameter('pulse').value
+        self.min_range = self.get_parameter('min_range').value
+        self.pitch_roll_mode = self.get_parameter('pitch_roll_mode').value
+        self.profile_mode = self.get_parameter('profile_mode').value
+        self.motor_mode = self.get_parameter('motor_mode').value
+        self.frequency = self.get_parameter('frequency').value
+
         self.request_format = str(NUM_BYTES) + "B"
-        self.sonar_range = sonar_range # byte 3.
-        self.step_direction = step_direction # byte 5.
-        self.start_gain = start_gain # byte 8.
-        self.absorption = absorption # byte 10.
-        self.train_angle = 120 # byte 11.
-        self.sector_width = 120 # byte 12.
-        self.step_size = step_size # byte 13.
-        self.pulse = pulse # byte 14.
-        self.min_range = min_range # byte 15.
-        self.pitch_roll = SONAR_PITCH_ROLL_MODE # byte 21.
-        self.profile = SONAR_PROFILE_MODE # byte 22.
-        self.motor = SONAR_MOTOR_MODE # byte 23.
-        self.frequency = frequency # byte 25.
+    #    self.sonar_range = sonar_range # byte 3.
+    #    self.step_direction = step_direction # byte 5.
+    #    self.start_gain = start_gain # byte 8.
+    #    self.absorption = absorption # byte 10.
+    #    self.train_angle = 120 # byte 11.
+    #    self.sector_width = 120 # byte 12.
+    #    self.step_size = step_size # byte 13.
+    #    self.pulse = pulse # byte 14.
+    #    self.min_range = min_range # byte 15.
+    #    self.pitch_roll = SONAR_PITCH_ROLL_MODE # byte 21.
+    #    self.profile = SONAR_PROFILE_MODE # byte 22.
+    #    self.motor = SONAR_MOTOR_MODE # byte 23.
+    #    self.frequency = frequency # byte 25.
         self.response_size = NUM_BYTES * 8 # number of bytes in the response.
 
 

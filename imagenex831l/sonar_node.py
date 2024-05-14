@@ -37,10 +37,25 @@ class SonarNode(Node):
             ('motor_mode', rclpy.Parameter.Type.INTEGER),
             ('frequency', rclpy.Parameter.Type.INTEGER)
             ])
+        self.max_range = self.get_parameter('max_range').value
+        self.step_direction = self.get_parameter('step_direction').value
+        self.start_gain = self.get_parameter('start_gain').value
+        self.absorption = self.get_parameter('absorption').value
+        self.train_angle = self.get_parameter('train_angle').value
+        self.sector_width = self.get_parameter('sector_width').value
+        self.step_size = self.get_parameter('step_size').value
+        self.pulse = self.get_parameter('pulse').value
+        self.min_range = self.get_parameter('min_range').value
+        self.pitch_roll_mode = self.get_parameter('pitch_roll_mode').value
+        self.profile_mode = self.get_parameter('profile_mode').value
+        self.motor_mode = self.get_parameter('motor_mode').value
+        self.frequency = self.get_parameter('frequency').value
 
+        self.get_logger().info(str(self.get_parameter('frequency').value))
         self.add_on_set_parameters_callback(self.parameters_callback)
         self.first_exception_time = None
         self.sensor = Imagenex831L()
+        self.sensor.set_parameters(params)
 
     def parameters_callback(self, params):
         self.sensor.set_parameters(params)
