@@ -55,7 +55,6 @@ class SonarNode(Node):
         self.add_on_set_parameters_callback(self.parameters_callback)
         self.first_exception_time = None
         self.sensor = Imagenex831L()
-        self.sensor.set_parameters(params)
 
     def parameters_callback(self, params):
         self.sensor.set_parameters(params)
