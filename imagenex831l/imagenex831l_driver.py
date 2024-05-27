@@ -102,38 +102,6 @@ class Imagenex831L():
         except socket.error as msg:
             self.connection = None
 
-        # Setting parameters.
-        self.declare_parameters(
-            namespace='',
-            parameters=[
-            ('max_range', rclpy.Parameter.Type.INTEGER),
-            ('step_direction', rclpy.Parameter.Type.INTEGER),
-            ('start_gain', rclpy.Parameter.Type.INTEGER),
-            ('absorption', rclpy.Parameter.Type.INTEGER),
-            ('train_angle', rclpy.Parameter.Type.INTEGER),
-            ('sector_width', rclpy.Parameter.Type.INTEGER),
-            ('step_size', rclpy.Parameter.Type.INTEGER),
-            ('pulse', rclpy.Parameter.Type.INTEGER),
-            ('min_range', rclpy.Parameter.Type.INTEGER),
-            ('pitch_roll_mode', rclpy.Parameter.Type.INTEGER),
-            ('profile_mode', rclpy.Parameter.Type.INTEGER),
-            ('motor_mode', rclpy.Parameter.Type.INTEGER),
-            ('frequency', rclpy.Parameter.Type.INTEGER)
-            ])
-        self.max_range = self.get_parameter('max_range').value
-        self.step_direction = self.get_parameter('step_direction').value
-        self.start_gain = self.get_parameter('start_gain').value
-        self.absorption = self.get_parameter('absorption').value
-        self.train_angle = self.get_parameter('train_angle').value
-        self.sector_width = self.get_parameter('sector_width').value
-        self.step_size = self.get_parameter('step_size').value
-        self.pulse = self.get_parameter('pulse').value
-        self.min_range = self.get_parameter('min_range').value
-        self.pitch_roll_mode = self.get_parameter('pitch_roll_mode').value
-        self.profile_mode = self.get_parameter('profile_mode').value
-        self.motor_mode = self.get_parameter('motor_mode').value
-        self.frequency = self.get_parameter('frequency').value
-
         self.request_format = str(NUM_BYTES) + "B"
     #    self.sonar_range = sonar_range # byte 3.
     #    self.step_direction = step_direction # byte 5.
@@ -349,37 +317,37 @@ class Imagenex831L():
             # The sensor reported these measurements as valid, but they are discarded per the limits defined by minimum_range and maximum_range.
         """
 
-    def set_parameters(self, config):
+    def set_parameters(self, sd, sg, ab, ta, sw, ss, p, maxrang, minrang, pr, pro, mo, fr):
         """Set parameters. TODO(aql) more complete doc.
 
 
         Args:
             config: structure coming from dynamic_reconfigure.
         """
-        self.sonar_range = config.max_range # byte 3.
-        self.step_direction = config.step_direction # byte 5.
+        self.sonar_range = maxrang # byte 3.
+        self.step_direction =sd # byte 5.
         # Ensure that step_direction returns to 0 as it is one-time bit to
         # reverse the direction of the rotating transducer.
-        config.step_direction = bool(0)
-        self.start_gain = config.start_gain # byte 8.
-        if config.absorption == 253:
+        #config.step_direction = bool(0)
+        self.start_gain = sg # byte 8.
+        if ab == 253:
             # Avoid problems with the end character of the switch command.
-            config.absorption = 252
-        self.absorption = config.absorption # byte 10.
-        config.train_angle = my_round(config.train_angle, base=3)
-        self.train_angle = config.train_angle # byte 11.
-        config.sector_width = my_round(config.sector_width, base=3)
-        self.sector_width = config.sector_width # byte 12.
-        self.step_size = config.step_size # byte 13.
-        self.pulse = config.pulse # byte 14.
-        self.min_range = config.min_range # byte 15.
-        self.pitch_roll = config.pitch_roll_mode # byte 21.
-        self.profile = config.profile_mode # byte 22.
-        self.motor = config.motor_mode # byte 23.
-        config.frequency = my_round(config.frequency)
-        frequency_id = ALLOWED_FREQUENCIES.index(config.frequency)
+            ab = 252
+        self.absorption = ab # byte 10.
+        #config.train_angle = my_round(config.train_angle, base=3)
+        self.train_angle = ta # byte 11.
+        #config.sector_width = my_round(config.sector_width, base=3)
+        self.sector_width = sw # byte 12.
+        self.step_size = ss # byte 13.
+        self.pulse = p # byte 14.
+        self.min_range = minrang # byte 15.
+        self.pitch_roll = pr # byte 21.
+        self.profile = pro # byte 22.
+        self.motor = mo # byte 23.
+        #config.frequency = my_round(config.frequency)
+        frequency_id = ALLOWED_FREQUENCIES.index(fr)
         self.frequency = BYTE_25[frequency_id] # byte 25.
-        return config
+
 
     def close_connection(self):
         """Close TCP/IP connection.

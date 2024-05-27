@@ -55,9 +55,10 @@ class SonarNode(Node):
         self.add_on_set_parameters_callback(self.parameters_callback)
         self.first_exception_time = None
         self.sensor = Imagenex831L()
+        self.sensor.set_parameters(self.step_direction, self.start_gain, self.absorption, self.train_angle, self.sector_width, self.step_size, self.pulse, self.max_range, self.min_range, self.pitch_roll_mode, self.profile_mode, self.motor_mode, self.frequency)
 
     def parameters_callback(self, params):
-        self.sensor.set_parameters(params)
+        self.sensor.set_parameters(self.step_direction, self.start_gain, self.absorption, self.train_angle, self.sector_width, self.step_size, self.pulse, self.max_range, self.min_range, self.pitch_roll_mode, self.profile_mode, self.motor_mode, self.frequency)
         return SetParametersResult(successful=True)
 
 
