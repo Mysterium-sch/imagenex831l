@@ -5,10 +5,12 @@ from rclpy.node import Node
 from imagenex831l_ros2.msg import ProcessedRange, RawRange
 from imagenex831l.imagenex831l_driver import Imagenex831L
 from rcl_interfaces.msg import SetParametersResult
+from std_msgs.msg import String
 
 SENSOR_NAME = 'imagenex831l'
 SONAR_TOPIC_NAME = 'range'
 SONAR_RAW_TOPIC_NAME = 'range_raw'
+SONAR_HEALTH_TOPIC_NAME = 'sonar_health'
 POLL_FREQUENCY = 10
 RESET_TIMEOUT = 1
 
@@ -18,7 +20,8 @@ class SonarNode(Node):
         super().__init__('imagenex831l')
         self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
         self.range_raw_pub = self.create_publisher(RawRange, f'{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
-        
+        self.sonar_health = self.create_publisher(String, f'{SENSOR_NAME}/{SONAR_HEALTH_TOPIC_NAME}', 10)
+
         self.frequency = self.get_parameter('poll_frequency').value if self.has_parameter('poll_frequency') else POLL_FREQUENCY
         self.declare_parameters(
             namespace='',
@@ -84,11 +87,13 @@ class SonarNode(Node):
 
                 self.range_raw_pub.publish(sonar_raw_msg)
                 self.range_pub.publish(sonar_msg)
+                self.sonar_health.publish("Active")
 
                 if self.first_exception_time:
                     self.first_exception_time = None
 
             except Exception as e:
+                self.sonar_health.publish("Not Active")
                 if self.first_exception_time is None:
                     self.get_logger().error(f'Exception when reading sonar data: {e}')
                     self.first_exception_time = current_time
