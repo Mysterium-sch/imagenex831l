@@ -19,7 +19,7 @@ class SonarNode(Node):
     def __init__(self):
         super().__init__('imagenex831l')
 
-        self.declare_parameter("device", rclpy.Parameter.Type.String)
+        self.declare_parameter("device", "")
         device = self.get_parameter('device').value
 
         self.range_pub = self.create_publisher(ProcessedRange, f'{device}/{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
