@@ -8,6 +8,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     sonar = LaunchConfiguration('sonar', default='true')
+    device = LaunchConfiguration('device', default='')
     config = os.path.join(get_package_share_directory('imagenex831l_ros2'),
         'cfg',
         'sonar.yaml'
@@ -18,7 +19,7 @@ def generate_launch_description():
             package='imagenex831l_ros2',
             executable='sonar_node.py',
             name='imagenex831l_ros2',
-            parameters = [config],
+            parameters = [config, device],
             condition=LaunchConfigurationEquals('sonar', 'true')
         )
     ])

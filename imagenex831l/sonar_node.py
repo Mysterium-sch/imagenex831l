@@ -18,10 +18,15 @@ class SonarNode(Node):
     
     def __init__(self):
         super().__init__('imagenex831l')
-        self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
-        self.range_raw_pub = self.create_publisher(RawRange, f'{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
-        self.sonar_health = self.create_publisher(String, f'{SENSOR_NAME}/{SONAR_HEALTH_TOPIC_NAME}', 10)
 
+        self.declare_parameter("device", rclpy.Parameter.Type.String)
+        device = self.get_parameter('device').value
+
+        self.range_pub = self.create_publisher(ProcessedRange, f'{device}/{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
+        self.range_raw_pub = self.create_publisher(RawRange, f'{device}/{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
+        self.sonar_health = self.create_publisher(String, f'{device}/{SENSOR_NAME}/{SONAR_HEALTH_TOPIC_NAME}', 10)
+        
+        
         self.frequency = self.get_parameter('poll_frequency').value if self.has_parameter('poll_frequency') else POLL_FREQUENCY
         self.declare_parameters(
             namespace='',
