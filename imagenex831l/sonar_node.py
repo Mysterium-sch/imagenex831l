@@ -92,13 +92,17 @@ class SonarNode(Node):
 
                 self.range_raw_pub.publish(sonar_raw_msg)
                 self.range_pub.publish(sonar_msg)
-                self.sonar_health.publish("Active")
+                msg = String()
+                msg.data = "Active"
+                self.sonar_health.publish(msg)
 
                 if self.first_exception_time:
                     self.first_exception_time = None
 
             except Exception as e:
-                self.sonar_health.publish("Not Active")
+                msg = String()
+                msg.data = "Not Active"
+                self.sonar_health.publish(msg)
                 if self.first_exception_time is None:
                     self.get_logger().error(f'Exception when reading sonar data: {e}')
                     self.first_exception_time = current_time
