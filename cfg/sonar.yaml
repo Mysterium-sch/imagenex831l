@@ -12,7 +12,7 @@
     pitch_roll_mode: 0  # Pitch roll mode.
     profile_mode: 0  # Profile mode.
     motor_mode: 0  # Motor mode.
-    frequency: 20  # Frequency (kHz), 5kHz step.
+    frequency: 2150  # Frequency (kHz), 5kHz step.
     
     
     
