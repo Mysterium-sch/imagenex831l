@@ -43,7 +43,8 @@ class SonarNode(Node):
             ('pitch_roll_mode', rclpy.Parameter.Type.INTEGER),
             ('profile_mode', rclpy.Parameter.Type.INTEGER),
             ('motor_mode', rclpy.Parameter.Type.INTEGER),
-            ('frequency', rclpy.Parameter.Type.INTEGER)
+            ('frequency', rclpy.Parameter.Type.INTEGER),
+            ('poll_frequency', rclpy.Parameter.Type.INTEGER)
             ])
         self.max_range = self.get_parameter('max_range').value
         self.step_direction = self.get_parameter('step_direction').value
@@ -58,6 +59,7 @@ class SonarNode(Node):
         self.profile_mode = self.get_parameter('profile_mode').value
         self.motor_mode = self.get_parameter('motor_mode').value
         self.frequency = self.get_parameter('frequency').value
+        self.poll_frequency = self.get_parameter('poll_frequency').value
 
         self.sensor = Imagenex831L()
         self.get_logger().info(str(self.get_parameter('frequency').value))
@@ -71,7 +73,7 @@ class SonarNode(Node):
 
 
     def spin(self):
-        node = self.create_rate(self.frequency)
+        node = self.create_rate(self.poll_frequency)
         while rclpy.ok():
             sonar_msg = ProcessedRange()
             sonar_raw_msg = RawRange()
