@@ -13,7 +13,7 @@
     profile_mode: 0  # Profile mode.
     motor_mode: 0  # Motor mode.
     frequency: 2150  # Frequency (kHz), 5kHz step.
-    
+    poll_frequency: 10  # Frequency (kHz), 5kHz step.
     
     
     
