@@ -9,10 +9,11 @@ from launch_ros.actions import Node
 def generate_launch_description():
     sonar = LaunchConfiguration('sonar', default='true')
     device = LaunchConfiguration('device', default='')
-    config = os.path.join(get_package_share_directory('imagenex831l_ros2'),
+    hold = os.path.join(get_package_share_directory('imagenex831l_ros2'),
         'cfg',
         'sonar.yaml'
         )
+    config = LaunchConfiguration('config', default=hold)
 
     return LaunchDescription([
         Node(
