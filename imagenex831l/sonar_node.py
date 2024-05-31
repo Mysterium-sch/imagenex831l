@@ -22,9 +22,9 @@ class SonarNode(Node):
         self.declare_parameter("device", "")
         device = self.get_parameter('device').value
 
-        self.range_pub = self.create_publisher(ProcessedRange, f'{device}/{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
-        self.range_raw_pub = self.create_publisher(RawRange, f'{device}/{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
-        self.sonar_health = self.create_publisher(String, f'{device}/{SENSOR_NAME}/{SONAR_HEALTH_TOPIC_NAME}', 10)
+        self.range_pub = self.create_publisher(ProcessedRange, f'{SENSOR_NAME}/{SONAR_TOPIC_NAME}', 10)
+        self.range_raw_pub = self.create_publisher(RawRange, f'{SENSOR_NAME}/{SONAR_RAW_TOPIC_NAME}', 10)
+        self.sonar_health = self.create_publisher(String, f'{SENSOR_NAME}/{SONAR_HEALTH_TOPIC_NAME}', 10)
         
         self.declare_parameters(
             namespace='',
