@@ -21,6 +21,7 @@ def generate_launch_description():
             executable='sonar_node.py',
             name='imagenex831l_ros2',
             parameters = [config, device],
+            namespce=device,
             condition=LaunchConfigurationEquals('sonar', 'true')
         )
     ])
