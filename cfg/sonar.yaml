@@ -1,4 +1,4 @@
-/imagenex831l_ros2:
+/jetson_2/imagenex831l_ros2:
   ros__parameters:
     max_range: 10  # Max range in the request (byte 3).
     step_direction: 0  # Step direction (byte 5).
