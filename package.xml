@@ -4,10 +4,10 @@
   <name>imagenex831l_ros2</name>
   <version>0.0.0</version>
   <description>The imagenex831l package</description>
-  <maintainer email="albertoq@cse.sc.edu">Alberto Quattrini Li</maintainer>
+  <maintainer email="lamblily90@gmail.com">Lilian Lamb</maintainer>
   <license>MIT</license>
   <url type="website">http://wiki.ros.org/imagenex831l</url>
-  <author email="albertoq@cse.sc.edu">Alberto Quattrini Li</author>
+  <author email="lamblily90@gmail.com">Lilian Lamb</author>
   
   
   <buildtool_depend>catkin</buildtool_depend>
@@ -32,4 +32,5 @@
   </export>
 
 </package>
+
 

@@ -3,6 +3,9 @@
 ROS2 driver for the [IMAGENEX831L](https://imagenex.com/products/831l-pipe-profiling).
 
 ## Getting started
+This ROS2 package connects to the sonar and publishes both `raw_range` and `processed_range` custom messages. Originally created by Alberto Quattrini Li for ROS1 Melodic in Python 2, the old package can be found [here](https://github.com/quattrinili/imagenex831l).
+
+This package has been converted to ROS2. The parameters for the node can be found in `/cfg/sonar.yaml`. These parameters are automatically loaded from this file when the launch file is called. Additionally, a `sonar_health` topic was created to publish the connection status of the sonar (active if the sonar is properly connected and not active if there is no connection). The node publishes the sonar's range at a rate of 1/frequency, which can be set in the YAML file.
 
 ### Prerequisites
 
